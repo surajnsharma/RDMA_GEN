@@ -1,0 +1,271 @@
+Starting Git setup script...
+No Git repository found. Initializing a new Git repository in this directory...
+Initialized empty Git repository in /Users/surajsharma/RDMA_TEST/.git/
+Remote URL set to git@github.com:/.git
+New Git repository initialized.
+Enter your GitHub username: Enter your GitHub email: Enter the name of the repository: Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+Enter your choice: Remote URL updated to git@github.com:surajsharma/RDMA_GEN.git
+SSH key already exists at ~/.ssh/id_ed25519
+Copy the SSH key below and add it to your GitHub account under Settings > SSH and GPG keys > New SSH key:
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ5ZZbbCJz/F35OWEetwkGSby6rbaazqpyhY9pw0VWZZ surajshamra@juniper.net
+
+Press Enter after adding the SSH key to GitHub...
+SSH configuration updated to use id_ed25519 for GitHub.
+Checking for files larger than 100 MB to track with Git LFS...
+[main (root-commit) e97a288] Auto-commit: updating remote repository
+ 22 files changed, 2035 insertions(+)
+ create mode 100644 .git_config
+ create mode 100644 .idea/.gitignore
+ create mode 100644 .idea/RDMA_TEST.iml
+ create mode 100644 .idea/inspectionProfiles/Project_Default.xml
+ create mode 100644 .idea/inspectionProfiles/profiles_settings.xml
+ create mode 100644 .idea/misc.xml
+ create mode 100644 .idea/modules.xml
+ create mode 100644 README.md
+ create mode 100644 enable_rocev2_dcqcn.sh
+ create mode 100644 install.py
+ create mode 100644 install_mft_and_validate.sh
+ create mode 100644 main.py
+ create mode 100644 rdma_device.py
+ create mode 100644 rdma_perf_tool.py
+ create mode 100644 rdma_perf_tool_v1.py
+ create mode 100644 run_client.sh
+ create mode 100644 run_rdma_test.py
+ create mode 100644 run_rdma_test_v1.py
+ create mode 100644 run_server.sh
+ create mode 100755 setup_git.sh
+ create mode 100644 setup_git_repo.log
+ create mode 100644 test.py
+ERROR: Repository not found.
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Remote URL: git@github.com:surajsharma/RDMA_GEN.git
+
+Press Enter to keep this configuration or type 'change' to update.
+Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Enter the name for the new GitHub repository: Should the repo be public? (yes/no): Creating GitHub repository 'surajsharma'...
+./setup_git.sh: line 35: gh: command not found
+❌ Failed to create GitHub repository.
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Remote URL: git@github.com:surajsharma/RDMA_GEN.git
+
+Press Enter to keep this configuration or type 'change' to update.
+Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Remote URL updated to git@github.com:surajsharma/RDMA_GEN.git
+SSH key already exists at ~/.ssh/id_ed25519
+Copy the SSH key below and add it to your GitHub account under Settings > SSH and GPG keys > New SSH key:
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ5ZZbbCJz/F35OWEetwkGSby6rbaazqpyhY9pw0VWZZ surajshamra@juniper.net
+
+Press Enter after adding the SSH key to GitHub...
+SSH configuration updated to use id_ed25519 for GitHub.
+Checking for files larger than 100 MB to track with Git LFS...
+[main 741f578] Auto-commit: updating remote repository
+ 3 files changed, 103 insertions(+)
+ create mode 100644 .idea/vcs.xml
+ERROR: Repository not found.
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Remote URL: git@github.com:surajsharma/RDMA_GEN.git
+
+Press Enter to keep this configuration or type 'change' to update.
+Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Remote URL updated to git@github.com:surajsharma/RDMA_GEN.git
+SSH key already exists at ~/.ssh/id_ed25519
+Copy the SSH key below and add it to your GitHub account under Settings > SSH and GPG keys > New SSH key:
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ5ZZbbCJz/F35OWEetwkGSby6rbaazqpyhY9pw0VWZZ surajshamra@juniper.net
+
+Press Enter after adding the SSH key to GitHub...
+SSH configuration updated to use id_ed25519 for GitHub.
+Checking for files larger than 100 MB to track with Git LFS...
+[main e701963] Auto-commit: updating remote repository
+ 1 file changed, 31 insertions(+)
+ERROR: Repository not found.
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Remote URL: git@github.com:surajsharma/RDMA_GEN.git
+
+Press Enter to keep this configuration or type 'change' to update.
+Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Remote URL updated to git@github.com:surajsharma/RDMA_GEN.git
+SSH key already exists at ~/.ssh/id_ed25519
+Copy the SSH key below and add it to your GitHub account under Settings > SSH and GPG keys > New SSH key:
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ5ZZbbCJz/F35OWEetwkGSby6rbaazqpyhY9pw0VWZZ surajshamra@juniper.net
+
+Press Enter after adding the SSH key to GitHub...
+SSH configuration updated to use id_ed25519 for GitHub.
+Checking for files larger than 100 MB to track with Git LFS...
+[main 0182804] Auto-commit: updating remote repository
+ 1 file changed, 30 insertions(+)
+ERROR: Repository not found.
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Remote URL: git@github.com:surajsharma/RDMA_GEN.git
+
+Press Enter to keep this configuration or type 'change' to update.
+Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Remote URL updated to git@github.com:surajsharma/RDMA_GEN.git
+SSH key already exists at ~/.ssh/id_ed25519
+Copy the SSH key below and add it to your GitHub account under Settings > SSH and GPG keys > New SSH key:
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ5ZZbbCJz/F35OWEetwkGSby6rbaazqpyhY9pw0VWZZ surajshamra@juniper.net
+
+Press Enter after adding the SSH key to GitHub...
+SSH configuration updated to use id_ed25519 for GitHub.
+Checking for files larger than 100 MB to track with Git LFS...
+[main c06dea0] Auto-commit: updating remote repository
+ 1 file changed, 30 insertions(+)
+ERROR: Repository not found.
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Remote URL: git@github.com:surajsharma/RDMA_GEN.git
+
+Press Enter to keep this configuration or type 'change' to update.
+Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Are you sure you want to delete the Git repository in this directory?
+This will remove the .git folder and all version history.
+Type 'DELETE' to confirm: The Git repository has been successfully deleted.
+Starting Git setup script...
+No Git repository found. Initializing a new Git repository in this directory...
+Initialized empty Git repository in /Users/surajsharma/RDMA_TEST/.git/
+Remote URL set to git@github.com:/.git
+New Git repository initialized.
+Current Git configuration:
+GitHub Username: surajsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Remote URL: git@github.com:surajsharma/RDMA_GEN.git
+
+Press Enter to keep this configuration or type 'change' to update.
+Starting Git setup script...
+No Git repository found. Initializing a new Git repository in this directory...
+Initialized empty Git repository in /Users/surajsharma/RDMA_TEST/.git/
+Remote URL set to git@github.com:/.git
+New Git repository initialized.
+Current Git configuration:
+GitHub Username: surajsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Remote URL: git@github.com:surajsharma/RDMA_GEN.git
+
+Press Enter to keep this configuration or type 'change' to update.
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Remote URL: git@github.com:surajsharma/RDMA_GEN.git
+
+Press Enter to keep this configuration or type 'change' to update.
+Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Remote URL updated to git@github.com:surajsharma/RDMA_GEN.git
+SSH key already exists at ~/.ssh/id_ed25519
+Copy the SSH key below and add it to your GitHub account under Settings > SSH and GPG keys > New SSH key:
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ5ZZbbCJz/F35OWEetwkGSby6rbaazqpyhY9pw0VWZZ surajshamra@juniper.net
+
+Press Enter after adding the SSH key to GitHub...
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+
+Type 'change' to update any of these values, or press Enter to continue.
+Your choice: Enter your GitHub username: Enter your GitHub email: Enter the name of the repository: Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Remote URL updated to git@github.com:surajnsharma/RDMA_GEN.git
+SSH key already exists at ~/.ssh/id_ed25519
+Copy the SSH key below and add it to your GitHub account under Settings > SSH and GPG keys > New SSH key:
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ5ZZbbCJz/F35OWEetwkGSby6rbaazqpyhY9pw0VWZZ surajshamra@juniper.net
+
+Press Enter after adding the SSH key to GitHub...
+SSH configuration updated to use id_ed25519 for GitHub.
+Checking for files larger than 100 MB to track with Git LFS...
