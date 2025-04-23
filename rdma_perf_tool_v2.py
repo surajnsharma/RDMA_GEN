@@ -9,7 +9,6 @@ from prometheus_client import start_http_server, Gauge
 import csv
 from datetime import datetime
 
-
 class RDMAPerf:
     def __init__(self, role, device=None, threads=1, qdepth=512, size=65536, duration=60,
                  server_ip=None, base_port=18515, log_csv=False, log_json=False,
@@ -56,7 +55,6 @@ class RDMAPerf:
         # Create logs directory if needed
         if self.log_csv or self.log_json:
             os.makedirs("logs", exist_ok=True)
-
     def auto_detect_rdma_device(self):
         base_path = "/sys/class/infiniband"
         for dev in os.listdir(base_path):
@@ -98,8 +96,7 @@ class RDMAPerf:
         if result:
             result["thread_id"] = thread_id
             self.results.append(result)
-            print(
-                f"[Thread {thread_id}] BW_avg = {result['bw_avg_gbps']} Gbps, MsgRate = {result['msg_rate_mpps']} Mpps")
+            print(f"[Thread {thread_id}] BW_avg = {result['bw_avg_gbps']} Gbps, MsgRate = {result['msg_rate_mpps']} Mpps")
         else:
             print(f"[Thread {thread_id}] Failed to parse output")
 
@@ -154,6 +151,7 @@ class RDMAPerf:
         while not self.monitor_stop.is_set():
             self.thread_count.set(len(self.active_threads))
             time.sleep(5)
+
 
     def run(self):
         print(f"Role: {self.role}  Device: {self.device}  Port: {self.port}")

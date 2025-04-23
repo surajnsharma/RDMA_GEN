@@ -1,11 +1,10 @@
-#run_rdma_test.py#
 import argparse
 import subprocess
 import threading
 import time
 import os
+import signal
 from rdma_perf_tool import RDMAPerf
-
 
 def cleanup_stale_rdma_bw():
     print("[Cleanup] Killing all stale ib_*_bw processes via pkill...")
@@ -13,6 +12,7 @@ def cleanup_stale_rdma_bw():
         subprocess.run("pkill -f -e 'ib_.*_bw'", shell=True, check=True)
     except subprocess.CalledProcessError:
         print("[Cleanup] No matching RDMA processes found or already terminated.")
+
 
 def auto_select_active_mellanox_interface():
     base_path = "/sys/class/infiniband"
@@ -78,15 +78,13 @@ if __name__ == "__main__":
     parser.add_argument("--threads", type=int, default=0, help="Override number of threads")
     parser.add_argument("--test-type", choices=["write", "read", "send"], default="write")
     parser.add_argument("--kill", action="store_true", help="Kill all existing ib_*_bw RDMA processes before run")
-    parser.add_argument("--enable-prometheus", action="store_true", help="Enable Prometheus server for persistent mode")
-    parser.add_argument("--prometheus-port", type=int, default=9100, help="Port to expose Prometheus metrics")
 
     args = parser.parse_args()
 
     if args.threads > 0:
-       threads = args.threads
+        threads = args.threads
     else:
-       threads = max(1, int(args.link_speed / args.per_thread_gbps))
+        threads = max(1, int(args.link_speed / args.per_thread_gbps))
 
     print(f"Auto-calculated thread count: {threads} for target {args.link_speed} Gbps")
     if args.kill:
@@ -104,9 +102,7 @@ if __name__ == "__main__":
         log_json=args.log_json,
         persistent_server=args.multi_port_server,
         client_id=args.client_id,
-        test_type=args.test_type,
-        enable_prometheus=args.enable_prometheus,
-        prometheus_port=args.prometheus_port
+        test_type=args.test_type
     )
 
     if args.monitor_cnp:

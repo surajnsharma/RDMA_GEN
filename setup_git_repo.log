@@ -269,3 +269,132 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ5ZZbbCJz/F35OWEetwkGSby6rbaazqpyhY9pw0VWZZ
 Press Enter after adding the SSH key to GitHub...
 SSH configuration updated to use id_ed25519 for GitHub.
 Checking for files larger than 100 MB to track with Git LFS...
+[main (root-commit) 20885c0] Auto-commit: updating remote repository
+ 23 files changed, 2315 insertions(+)
+ create mode 100644 .git_config
+ create mode 100644 .idea/.gitignore
+ create mode 100644 .idea/RDMA_TEST.iml
+ create mode 100644 .idea/inspectionProfiles/Project_Default.xml
+ create mode 100644 .idea/inspectionProfiles/profiles_settings.xml
+ create mode 100644 .idea/misc.xml
+ create mode 100644 .idea/modules.xml
+ create mode 100644 .idea/vcs.xml
+ create mode 100644 README.md
+ create mode 100644 enable_rocev2_dcqcn.sh
+ create mode 100644 install.py
+ create mode 100644 install_mft_and_validate.sh
+ create mode 100644 main.py
+ create mode 100644 rdma_device.py
+ create mode 100644 rdma_perf_tool.py
+ create mode 100644 rdma_perf_tool_v1.py
+ create mode 100644 run_client.sh
+ create mode 100644 run_rdma_test.py
+ create mode 100644 run_rdma_test_v1.py
+ create mode 100644 run_server.sh
+ create mode 100755 setup_git.sh
+ create mode 100644 setup_git_repo.log
+ create mode 100644 test.py
+To github.com:surajnsharma/RDMA_GEN.git
+ * [new branch]      main -> main
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajnsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+
+Type 'change' to update any of these values, or press Enter to continue.
+Your choice: Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Enter the name for the new GitHub repository: Should the repo be public? (yes/no): Creating GitHub repository 'TEST'...
+Flag --confirm has been deprecated, Pass any argument to skip confirmation prompt
+To get started with GitHub CLI, please run:  gh auth login
+Alternatively, populate the GH_TOKEN environment variable with a GitHub API authentication token.
+❌ Failed to create GitHub repository.
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajnsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Type 'change' to update any of these values, or press Enter to continue.\nYour choice: Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajnsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Type 'change' to update any of these values, or press Enter to continue.\nYour choice: Enter your GitHub username: Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajnsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Type 'change' to update any of these values, or press Enter to continue.\nYour choice: Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Enter the name for the new GitHub repository: Should the repo be public? (yes/no): Creating GitHub repository 'test'...
+accepts at most 1 arg(s), received 2
+❌ Failed to create GitHub repository.
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajnsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Type 'change' to update any of these values, or press Enter to continue.\nYour choice: Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Enter the name for the new GitHub repository: Should the repo be public? (yes/no): Creating GitHub repository 'test'...
+Flag --confirm has been deprecated, Pass any argument to skip confirmation prompt
+To get started with GitHub CLI, please run:  gh auth login
+Alternatively, populate the GH_TOKEN environment variable with a GitHub API authentication token.
+❌ Failed to create GitHub repository.
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajnsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Type 'change' to update any of these values, or press Enter to continue.\nYour choice: Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Enter the name for the new GitHub repository: Should the repo be public? (yes/no): Creating GitHub repository 'test'...
+Flag --confirm has been deprecated, Pass any argument to skip confirmation prompt
+https://github.com/surajnsharma/test
+✅ GitHub repository 'test' created successfully.
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajnsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: test
+Type 'change' to update any of these values, or press Enter to continue.\nYour choice: Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Remote URL updated to git@github.com:surajnsharma/test.git
+SSH key already exists at ~/.ssh/id_ed25519
+Copy the SSH key below and add it to your GitHub account:
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ5ZZbbCJz/F35OWEetwkGSby6rbaazqpyhY9pw0VWZZ surajshamra@juniper.net
+Press Enter after adding the SSH key to GitHub...Checking for files larger than 100MB...

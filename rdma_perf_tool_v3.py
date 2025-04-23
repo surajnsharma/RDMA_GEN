@@ -1,4 +1,4 @@
-import os,re
+import os
 import subprocess
 import threading
 import time
@@ -6,7 +6,7 @@ import json
 import csv
 from datetime import datetime
 from prometheus_client import start_http_server, Gauge
-from prometheus_exporter import start_prometheus_exporter
+
 
 class RDMAPerf:
     def __init__(self, role, device=None, threads=1, qdepth=512, size=65536, duration=60,
@@ -29,7 +29,7 @@ class RDMAPerf:
         self.client_id = client_id
         self.test_type = test_type
         self.port = 1
-        self.results = {}
+        self.results = []
 
         self.cpu_cores = self.get_cpu_cores()
         self.supports_report_per_second = self.check_binary_supports("--report_per_second", "ib_write_bw")
@@ -45,10 +45,6 @@ class RDMAPerf:
         self.port_binary = Gauge('rdma_server_port_binary', 'RDMA binary used per port', ['port', 'binary'])
         self.port_core = Gauge('rdma_server_thread_core', 'CPU core per RDMA port', ['port', 'core'])
         self.port_respawns = Gauge('rdma_server_thread_respawns', 'Number of times server thread respawned', ['port'])
-        self.port_bw_gbps = Gauge('rdma_port_bw_gbps', 'Average bandwidth per port in Gbps', ['port'])
-        self.port_msg_rate_mpps = Gauge('rdma_port_msg_rate_mpps', 'Message rate per port in Mpps', ['port'])
-        self.port_rkey = Gauge('rdma_port_rkey', 'Last seen RKey per RDMA server port', ['port'])
-        self.port_vaddr = Gauge('rdma_port_vaddr', 'Last seen VAddr per RDMA server port', ['port'])
 
         os.makedirs("logs", exist_ok=True)
 
@@ -81,53 +77,41 @@ class RDMAPerf:
             args.append("--report_per_second")
         return " ".join(args)
 
-    def monitor_bw_output(self, port, stream):
-        for line in stream:
-            line = line.strip()
-            if not line or line.startswith("#"):
-                continue
-            try:
-                parts = line.split()
-                if len(parts) < 5 or not parts[0].isdigit():
+    def parse_ib_output(self, output):
+        lines = output.strip().splitlines()
+        for line in lines:
+            parts = line.strip().split()
+            if len(parts) >= 5:
+                try:
+                    return {
+                        "bytes": int(parts[0]),
+                        "iterations": int(parts[1]),
+                        "bw_avg_gbps": float(parts[3]),
+                        "msg_rate_mpps": float(parts[4])
+                    }
+                except:
                     continue
-                bw_gbps = float(parts[3])
-                mpps = float(parts[4])
-                self.port_bw_gbps.labels(port=str(port)).set(bw_gbps)
-                self.port_msg_rate_mpps.labels(port=str(port)).set(mpps)
-                self.results[port] = {
-                    "thread_id": port,
-                    "bw_avg_gbps": bw_gbps,
-                    "msg_rate_mpps": mpps
-                }
-                print(f"[Metrics] Port {port} BW: {bw_gbps} Gbps, MsgRate: {mpps} Mpps")
-            except Exception as e:
-                print(f"[WARN] Failed to parse line: {line} - {e}")
+        return {}
 
-    def launch_persistent_server_thread(self, core, port, binary):
-        args = self.build_common_args(binary)
-        cmd = [
-            "taskset", "-c", str(core),
-            binary, "-d", self.device, "-i", "1", "-F",
-            "-s", str(self.size), "-q", str(self.qdepth),
-            "--port", str(port), *args.split()
-        ]
+    def run_thread(self, cmd, thread_id, meta_file=None):
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, text=True)
+        stdout, stderr = proc.communicate()
 
-        def loop_runner():
-            while True:
-                proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-                self.monitor_bw_output(port, proc.stdout)
-                proc.wait()
-                time.sleep(1)
+        if meta_file:
+            with open(meta_file, "w") as f:
+                f.write(stdout + "\n" + stderr)
 
-        print(f"[Persistent Thread] Starting monitor thread for port {port}")
-        t = threading.Thread(target=loop_runner, daemon=True)
-        t.start()
-
-        self.port_binary.labels(port=str(port), binary=binary).set(1)
-        self.port_core.labels(port=str(port), core=str(core)).set(1)
-        self.port_respawns.labels(port=str(port)).inc()
+        result = self.parse_ib_output(stdout)
+        if result:
+            result["thread_id"] = thread_id
+            self.results[thread_id] = result
+            print(
+                f"[Thread {thread_id}] BW_avg = {result['bw_avg_gbps']} Gbps, MsgRate = {result['msg_rate_mpps']} Mpps")
+        else:
+            print(f"[Thread {thread_id}] Failed to parse output")
 
     def run(self):
+        print(f"Role: {self.role}  Device: {self.device}  Threads: {self.threads}  Duration: {self.duration}s")
         binary = {
             "write": "ib_write_bw",
             "read": "ib_read_bw",
@@ -145,36 +129,21 @@ class RDMAPerf:
                     f"-q {self.qdepth} {args} --duration {self.duration} --port {port} {self.server_ip}"
                 )
                 print(f"[Client {i}] Launching: {cmd}")
-
-                def thread_runner(cmd=cmd, thread_id=i):
-                    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-                    stdout, stderr = proc.communicate()
-                    for line in stdout.splitlines():
-                        try:
-                            parts = line.strip().split()
-                            if len(parts) >= 5 and parts[0].isdigit():
-                                bw_gbps = float(parts[3])
-                                mpps = float(parts[4])
-                                self.results[thread_id] = {
-                                    "thread_id": thread_id,
-                                    "bw_avg_gbps": bw_gbps,
-                                    "msg_rate_mpps": mpps
-                                }
-                                print(f"[Thread {thread_id}] BW_avg = {bw_gbps} Gbps, MsgRate = {mpps} Mpps")
-                        except Exception:
-                            continue
-
-                t = threading.Thread(target=thread_runner)
+                t = threading.Thread(target=self.run_thread, args=(cmd, i))
                 t.start()
                 threads.append(t)
-
+                time.sleep(0.1)
             for t in threads:
                 t.join()
             self.log_results("client", self.client_id)
 
+
+
         elif self.role == "server" and not self.persistent_server:
             print("[One-shot] Starting server...")
+            self.results = [None] * self.threads
             threads = []
+
             for i in range(self.threads):
                 port = self.base_port + i
                 core = self.cpu_cores[i % len(self.cpu_cores)]
@@ -184,13 +153,8 @@ class RDMAPerf:
                     f"-q {self.qdepth} {args} --port {port}"
                 )
                 print(f"[Server {i}] Launching: {cmd}")
-
-                def thread_runner(cmd=cmd, port=port):
-                    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-                    self.monitor_bw_output(port, proc.stdout)
-                    proc.wait()
-
-                t = threading.Thread(target=thread_runner, daemon=True)
+                meta_path = f"logs/server_meta_{port}.txt"
+                t = threading.Thread(target=self.run_thread, args=(cmd, i, meta_path))
                 t.start()
                 threads.append(t)
                 time.sleep(0.1)
@@ -199,25 +163,26 @@ class RDMAPerf:
                 for t in threads:
                     t.join()
             except KeyboardInterrupt:
-                print("\n[!] Interrupted. Dumping logs...")
+                print("\n[!] Interrupted. Attempting to collect partial results...")
+                for t in threads:
+                    t.join(timeout=1)
+
+            self.results = [r for r in self.results if r]
             self.log_results("server", f"{self.base_port}_{self.threads}")
 
+
         elif self.role == "server" and self.persistent_server:
+            print("Starting persistent server...")
             if self.enable_prometheus:
                 print(f"[Prometheus] Starting metrics server on port {self.prometheus_port}")
-                start_prometheus_exporter(self.prometheus_port)
-
+                start_http_server(self.prometheus_port)
+                print("[Prometheus] Metrics HTTP server started")
+                threading.Thread(target=self.monitor_loop, daemon=True).start()
             for i in range(self.threads):
                 port = self.base_port + i
                 core = self.cpu_cores[i % len(self.cpu_cores)]
                 self.launch_persistent_server_thread(core, port, binary)
-
-            try:
-                threading.Event().wait()
-            except KeyboardInterrupt:
-                print("\n[!] Interrupted. Dumping logs...")
-                self.log_results("server", f"{self.base_port}_{self.threads}")
-
+                time.sleep(1.0)
     def log_results(self, role, id_val):
         if not self.log_csv and not self.log_json:
             return
@@ -226,11 +191,39 @@ class RDMAPerf:
             csv_file = f"logs/{role}_{id_val}_{ts}.csv"
             with open(csv_file, "w", newline="") as f:
                 writer = csv.DictWriter(f,
-                                        fieldnames=["thread_id", "bw_avg_gbps", "msg_rate_mpps"])
+                                        fieldnames=["thread_id", "bytes", "iterations", "bw_avg_gbps", "msg_rate_mpps"])
                 writer.writeheader()
-                for row in self.results.values():
+                for row in self.results:
                     writer.writerow(row)
         if self.log_json:
             json_file = f"logs/{role}_{id_val}_{ts}.json"
             with open(json_file, "w") as f:
-                json.dump(list(self.results.values()), f, indent=2)
+                json.dump(self.results, f, indent=2)
+
+    def launch_persistent_server_thread(self, core, port, binary):
+        args = self.build_common_args(binary)
+        cmd = f"taskset -c {core} bash -c 'while true; do {binary} -d {self.device} -i 1 -F -s {self.size} -q {self.qdepth} {args} --port {port}; sleep 1; done'"
+        print(f"[Persistent Thread] {cmd}")
+        proc = subprocess.Popen(cmd, shell=True)
+        self.active_threads[port] = proc
+        self.port_binary.labels(port=str(port), binary=binary).set(1)
+        self.port_core.labels(port=str(port), core=str(core)).set(1)
+        if port not in self.port_respawns._metrics:
+            self.port_respawns.labels(port=str(port)).set(0)
+        else:
+            self.port_respawns.labels(port=str(port)).inc()
+        self.server_thread_log[port] = {
+            "port": port,
+            "binary": binary,
+            "core": core,
+            "respawns": int(self.port_respawns.labels(port=str(port))._value.get())
+        }
+
+    def monitor_loop(self):
+        while not self.monitor_stop.is_set():
+            for port, proc in list(self.active_threads.items()):
+                if proc.poll() is not None:
+                    print(f"[Monitor] Respawning port {port}")
+                    data = self.server_thread_log[port]
+                    self.launch_persistent_server_thread(data["core"], port, data["binary"])
+            time.sleep(5)
