@@ -398,3 +398,45 @@ SSH key already exists at ~/.ssh/id_ed25519
 Copy the SSH key below and add it to your GitHub account:
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ5ZZbbCJz/F35OWEetwkGSby6rbaazqpyhY9pw0VWZZ surajshamra@juniper.net
 Press Enter after adding the SSH key to GitHub...Checking for files larger than 100MB...
+[main 3cab602] Auto-commit: updating remote repository
+ 16 files changed, 1901 insertions(+), 602 deletions(-)
+ create mode 100644 prometheus_exporter.py
+ create mode 100644 rdma_perf_tool_v2.py
+ create mode 100644 rdma_perf_tool_v3.py
+ rename run_client.sh => run_client0.sh (63%)
+ create mode 100644 run_client1.sh
+ create mode 100644 run_rdma_test_v2.py
+ create mode 100644 run_rdma_test_v3.py
+ create mode 100644 test2.py
+To github.com:surajnsharma/test.git
+ * [new branch]      main -> main
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajnsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: test
+Type 'change' to update any of these values, or press Enter to continue.\nYour choice: Enter your GitHub username: Enter your GitHub email: Enter the name of the repository: Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Invalid choice.
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajnsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Type 'change' to update any of these values, or press Enter to continue.\nYour choice: Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Remote URL updated to git@github.com:surajnsharma/RDMA_GEN.git
+SSH key already exists at ~/.ssh/id_ed25519
+Copy the SSH key below and add it to your GitHub account:
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ5ZZbbCJz/F35OWEetwkGSby6rbaazqpyhY9pw0VWZZ surajshamra@juniper.net
+Press Enter after adding the SSH key to GitHub...Checking for files larger than 100MB...
