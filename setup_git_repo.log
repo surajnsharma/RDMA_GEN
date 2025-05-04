@@ -440,3 +440,24 @@ SSH key already exists at ~/.ssh/id_ed25519
 Copy the SSH key below and add it to your GitHub account:
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ5ZZbbCJz/F35OWEetwkGSby6rbaazqpyhY9pw0VWZZ surajshamra@juniper.net
 Press Enter after adding the SSH key to GitHub...Checking for files larger than 100MB...
+[main c887089] Auto-commit: updating remote repository
+ 2 files changed, 42 insertions(+), 1 deletion(-)
+To github.com:surajnsharma/RDMA_GEN.git
+   20885c0..c887089  main -> main
+Starting Git setup script...
+Git repository already exists in this directory.
+Current Git configuration:
+GitHub Username: surajnsharma
+GitHub Email: surajsharma@juniper.net
+Repository Name: RDMA_GEN
+Type 'change' to update any of these values, or press Enter to continue.\nYour choice: Choose an action:
+1) Update (pull latest changes)
+2) Push new changes (requires SSH access)
+3) Delete the local Git repository
+4) Delete Online Git repository
+5) Create a new GitHub repository
+Enter your choice: Remote URL updated to git@github.com:surajnsharma/RDMA_GEN.git
+SSH key already exists at ~/.ssh/id_ed25519
+Copy the SSH key below and add it to your GitHub account:
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ5ZZbbCJz/F35OWEetwkGSby6rbaazqpyhY9pw0VWZZ surajshamra@juniper.net
+Press Enter after adding the SSH key to GitHub...Checking for files larger than 100MB...

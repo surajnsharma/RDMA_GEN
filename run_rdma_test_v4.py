@@ -94,11 +94,6 @@ if __name__ == "__main__":
     parser.add_argument("--kill", action="store_true", help="Kill all existing ib_*_bw RDMA processes before run")
     parser.add_argument("--enable-prometheus", action="store_true", help="Enable Prometheus server for persistent mode")
     parser.add_argument("--prometheus-port", type=int, default=9100, help="Port to expose Prometheus metrics")
-    parser.add_argument("--report-gbits", action="store_true",
-                        help="Enable Gbps reporting (adds --report_gbits to ib_*_bw)")
-    parser.add_argument("--latency", choices=["bw", "lat"], default="bw",
-                        help="Set to 'lat' to run latency test using ib_*_lat tools")
-
 
     args = parser.parse_args()
 
@@ -112,12 +107,8 @@ if __name__ == "__main__":
     print(f"[INFO] RDMA Vendor for device '{args.device}': {rdma_vendor.upper()}")
     if rdma_vendor == "amd":
         if args.qdepth != 1:
-            print(f"[WARN] Detected AMD Pollara NIC √ëoverriding qdepth={args.qdepth} to 1")
+            print(f"[WARN] Detected AMD Pollara NIC — overriding qdepth={args.qdepth} to 1")
             args.qdepth = 1
-        if args.size > 4096:
-            print(f"[WARN] Detected AMD Pollara NIC √ëoverriding size={args.size} bytes to 4096 bytes")
-            args.size = 4096
-
     if args.kill:
         cleanup_stale_rdma_bw()
     perf = RDMAPerf(
@@ -135,10 +126,7 @@ if __name__ == "__main__":
         client_id=args.client_id,
         test_type=args.test_type,
         enable_prometheus=args.enable_prometheus,
-        prometheus_port=args.prometheus_port,
-        use_report_gbits=args.report_gbits,
-        latency=args.latency
-
+        prometheus_port=args.prometheus_port
     )
 
     if args.monitor_cnp:

@@ -7,14 +7,8 @@ import csv
 from datetime import datetime
 from prometheus_client import start_http_server, Gauge
 
-from prometheus_client import CollectorRegistry
 from prometheus_exporter import start_prometheus_exporter
 
-# Global Prometheus registry shared across NVIDIA and AMD
-global_prometheus_registry = CollectorRegistry()
-
-
-global_prometheus_registry = CollectorRegistry()
 class RDMAPerf:
     def __init__(self, role, device=None, threads=1, qdepth=512, size=65536, duration=60,
                  server_ip=None, base_port=18515, log_csv=False, log_json=False,
@@ -47,32 +41,14 @@ class RDMAPerf:
         self.server_thread_log = {}
 
         # Prometheus metrics
-        """self.thread_count = Gauge('rdma_active_threads', 'RDMA listener threads')
+        self.thread_count = Gauge('rdma_active_threads', 'RDMA listener threads')
         self.port_binary = Gauge('rdma_server_port_binary', 'RDMA binary used per port', ['port', 'binary'])
         self.port_core = Gauge('rdma_server_thread_core', 'CPU core per RDMA port', ['port', 'core'])
         self.port_respawns = Gauge('rdma_server_thread_respawns', 'Number of times server thread respawned', ['port'])
         self.port_bw_gbps = Gauge('rdma_port_bw_gbps', 'Average bandwidth per port in Gbps', ['port'])
         self.port_msg_rate_mpps = Gauge('rdma_port_msg_rate_mpps', 'Message rate per port in Mpps', ['port'])
         self.port_rkey = Gauge('rdma_port_rkey', 'Last seen RKey per RDMA server port', ['port'])
-        self.port_vaddr = Gauge('rdma_port_vaddr', 'Last seen VAddr per RDMA server port', ['port'])"""
-
-        self.registry = global_prometheus_registry
-
-        self.thread_count = Gauge('rdma_active_threads', 'RDMA listener threads', registry=self.registry)
-        self.port_binary = Gauge('rdma_server_port_binary', 'RDMA binary used per port', ['port', 'binary'],
-                                 registry=self.registry)
-        self.port_core = Gauge('rdma_server_thread_core', 'CPU core per RDMA port', ['port', 'core'],
-                               registry=self.registry)
-        self.port_respawns = Gauge('rdma_server_thread_respawns', 'Number of times server thread respawned', ['port'],
-                                   registry=self.registry)
-        self.port_bw_gbps = Gauge('rdma_port_bw_gbps', 'Average bandwidth per port in Gbps', ['port'],
-                                  registry=self.registry)
-        self.port_msg_rate_mpps = Gauge('rdma_port_msg_rate_mpps', 'Message rate per port in Mpps', ['port'],
-                                        registry=self.registry)
-        self.port_rkey = Gauge('rdma_port_rkey', 'Last seen RKey per RDMA server port', ['port'],
-                               registry=self.registry)
-        self.port_vaddr = Gauge('rdma_port_vaddr', 'Last seen VAddr per RDMA server port', ['port'],
-                                registry=self.registry)
+        self.port_vaddr = Gauge('rdma_port_vaddr', 'Last seen VAddr per RDMA server port', ['port'])
 
         os.makedirs("logs", exist_ok=True)
 
@@ -333,10 +309,10 @@ class RDMAPerf:
                 if self.is_port_in_use(self.prometheus_port):
                     print(
                         f"[Prometheus] Port {self.prometheus_port} already in use. Skipping Prometheus exporter start.")
+                    self.enable_prometheus = False
                 else:
                     print(f"[Prometheus] Starting metrics server on port {self.prometheus_port}")
-                    start_prometheus_exporter(self.prometheus_port, registry=self.registry)
-
+                    start_prometheus_exporter(self.prometheus_port)
             for i in range(self.threads):
                 port = self.base_port + i
                 core = self.cpu_cores[i % len(self.cpu_cores)]
@@ -348,7 +324,7 @@ class RDMAPerf:
                 print("\n[!] Interrupted. Dumping logs...")
                 self.log_results("server", f"{self.base_port}_{self.threads}")
 
-    '''def log_results(self, role, id_val):
+    def log_results(self, role, id_val):
         if not self.log_csv and not self.log_json:
             return
 
@@ -390,41 +366,4 @@ class RDMAPerf:
         if self.log_json:
             json_file = f"logs/{role}_{id_val}_{ts}.json"
             with open(json_file, "w") as f:
-                json.dump(list(self.results.values()), f, indent=2)'''
-
-    def log_results(self, role, id_val):
-        if not self.log_csv and not self.log_json:
-            return
-
-        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-
-        bw_summary = []
-
-        for thread_id, data in self.results.items():
-            summary_entry = {
-                "thread_id": thread_id,
-                "bw_avg_gbps": data.get("bw_avg_gbps", 0.0),
-                "msg_rate_mpps": data.get("msg_rate_mpps", 0.0)
-            }
-            bw_summary.append(summary_entry)
-
-            # Dump QPN/RKey/VAddr separately if connections exist
-            connections = data.get("connections")
-            if connections and isinstance(connections, list):
-                qpn_file = f"logs/{role}_{id_val}_qpn_thread{thread_id}.json"
-                with open(qpn_file, "w") as fq:
-                    json.dump(connections, fq, indent=2)
-
-        if self.log_json:
-            json_file = f"logs/{role}_{id_val}_{ts}.json"
-            with open(json_file, "w") as f:
-                json.dump(bw_summary, f, indent=2)
-
-        if self.log_csv:
-            csv_file = f"logs/{role}_{id_val}_{ts}.csv"
-            fieldnames = ["thread_id", "bw_avg_gbps", "msg_rate_mpps"]
-            with open(csv_file, "w", newline="") as f:
-                writer = csv.DictWriter(f, fieldnames=fieldnames)
-                writer.writeheader()
-                for row in bw_summary:
-                    writer.writerow(row)
+                json.dump(list(self.results.values()), f, indent=2)

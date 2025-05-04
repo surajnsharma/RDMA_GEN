@@ -408,6 +408,58 @@ server_18550_8_20250422_032211.csv   server_meta_18550.txt  server_meta_18552.tx
 server_18550_8_20250422_032211.json  server_meta_18551.txt  server_meta_18553.txt  server_meta_18555.txt  server_meta_18557.txt
 
 ```
+## Running the latency test
 
+# Start server with latency measurement
+root@svl-d-ai-srv04:~/RDMA# cat run_server1_latency.sh
+python3 run_rdma_test.py --role server --device rocep160s0 --size 65536 --qdepth 1024 --threads 8 --log-csv --log-json --test-type write --base-port 18550 --latency lat
+root@svl-d-ai-srv04:~/RDMA# ./run_server1_latency.sh
+Auto-calculated thread count: 8 for target 400 Gbps
+[INFO] RDMA Vendor for device 'rocep160s0': NVIDIA
+[One-shot] Starting server...
+[Server 0] Launching: taskset -c 0 ib_write_lat -d rocep160s0 -F -s 65536  --port 18550
+[Server 1] Launching: taskset -c 1 ib_write_lat -d rocep160s0 -F -s 65536  --port 18551
+[Server 2] Launching: taskset -c 2 ib_write_lat -d rocep160s0 -F -s 65536  --port 18552
+[Server 3] Launching: taskset -c 3 ib_write_lat -d rocep160s0 -F -s 65536  --port 18553
+[Server 4] Launching: taskset -c 4 ib_write_lat -d rocep160s0 -F -s 65536  --port 18554
+[Server 5] Launching: taskset -c 5 ib_write_lat -d rocep160s0 -F -s 65536  --port 18555
+[Server 6] Launching: taskset -c 6 ib_write_lat -d rocep160s0 -F -s 65536  --port 18556
+[Server 7] Launching: taskset -c 7 ib_write_lat -d rocep160s0 -F -s 65536  --port 18557
+[Server INFO] Port 18553 latency test completed
+[Server INFO] Port 18551 latency test completed
+[Server INFO] Port 18554 latency test completed
+[Server INFO] Port 18556 latency test completed
+[Server INFO] Port 18557 latency test completed
+[Server INFO] Port 18555 latency test completed
+[Server INFO] Port 18552 latency test completed
+[Server INFO] Port 18550 latency test completed
+
+
+# Start latency measurement from client
+
+root@svl-d-ai-srv03:~/RDMA# python3 run_rdma_test.py --role client --device rocep160s0 --server-ip 10.200.10.13 --size 65536 --qdepth 1024 --threads 8 --log-csv --log-json --test-type write --base-port 18550 --client-id 0 --duration 5 --latency lat
+Auto-calculated thread count: 8 for target 400 Gbps
+[INFO] RDMA Vendor for device 'rocep160s0': NVIDIA
+[Client 0] Launching: taskset -c 0 ib_write_lat -d rocep160s0 -F -s 65536  --port 18550 10.200.10.13
+[Client 1] Launching: taskset -c 1 ib_write_lat -d rocep160s0 -F -s 65536  --port 18551 10.200.10.13
+[Client 2] Launching: taskset -c 2 ib_write_lat -d rocep160s0 -F -s 65536  --port 18552 10.200.10.13
+[Client 3] Launching: taskset -c 3 ib_write_lat -d rocep160s0 -F -s 65536  --port 18553 10.200.10.13
+[Client 4] Launching: taskset -c 4 ib_write_lat -d rocep160s0 -F -s 65536  --port 18554 10.200.10.13
+[Client 5] Launching: taskset -c 5 ib_write_lat -d rocep160s0 -F -s 65536  --port 18555 10.200.10.13
+[Client 6] Launching: taskset -c 6 ib_write_lat -d rocep160s0 -F -s 65536  --port 18556 10.200.10.13
+[Client 7] Launching: taskset -c 7 ib_write_lat -d rocep160s0 -F -s 65536  --port 18557 10.200.10.13
+[Thread 3] Avg Latency = 5.40 usec
+[Thread 1] Avg Latency = 5.45 usec
+[Thread 4] Avg Latency = 5.63 usec
+[Thread 6] Avg Latency = 5.63 usec
+[Thread 0] Avg Latency = 5.59 usec
+[Thread 5] Avg Latency = 4.54 usec
+[Thread 7] Avg Latency = 4.53 usec
+[Thread 2] Avg Latency = 5.60 usec
+
+[Summary] Client Latency:
+- Avg across all threads: 5.30 usec
+- Best thread 7: 4.53 usec
+- Worst thread 4: 5.63 usec
 
 ---
